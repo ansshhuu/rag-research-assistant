@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.Python
+venv/
+.venv/
+env/
+
+# Environment variables
+.env
+
+# ChromaDB local storage
+chroma_db/
+
+# Data files (don't commit raw docs)
+p1-ingestion/data/sample_docs/
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb

@@ -1,0 +1,22 @@
+# Document loaders
+pymupdf==1.24.5
+beautifulsoup4==4.12.3
+requests==2.32.3
+
+# Chunking
+langchain==0.2.16
+langchain-community==0.2.16
+
+# Embeddings (free, runs locally)
+sentence-transformers==3.0.1
+
+# Vector store (free, local)
+chromadb==0.5.5
+
+# Testing
+pytest==8.3.2
+pytest-cov==5.0.0
+
+# Utilities
+python-dotenv==1.0.1
+tqdm==4.66.5
