@@ -1,4 +1,4 @@
-import fitz  # PyMuPDF
+import fitz  
 import requests
 from bs4 import BeautifulSoup
 from pathlib import Path
@@ -11,21 +11,12 @@ class Document:
     content: str
     metadata: dict
 
-
-# ─────────────────────────────────────────────
-# HELPERS
-# ─────────────────────────────────────────────
-
 def _validate_path(path: Path, allowed_ext: list[str]):
     if not path.exists():
         raise FileNotFoundError(f"File not found: {path}")
     if path.suffix.lower() not in allowed_ext:
         raise ValueError(f"Expected {allowed_ext}, got: {path.suffix}")
 
-
-# ─────────────────────────────────────────────
-# PDF LOADER
-# ─────────────────────────────────────────────
 
 def load_pdf(file_path: str) -> List[Document]:
     path = Path(file_path)
@@ -61,10 +52,6 @@ def load_pdf(file_path: str) -> List[Document]:
     return documents
 
 
-# ─────────────────────────────────────────────
-# WEB PAGE LOADER
-# ─────────────────────────────────────────────
-
 def load_webpage(url: str, timeout: int = 10) -> List[Document]:
     headers = {
         "User-Agent": "Mozilla/5.0 (compatible; RAGBot/1.0)"
@@ -99,11 +86,6 @@ def load_webpage(url: str, timeout: int = 10) -> List[Document]:
         }
     )]
 
-
-# ─────────────────────────────────────────────
-# TEXT / MARKDOWN LOADER
-# ─────────────────────────────────────────────
-
 def load_text_file(file_path: str) -> List[Document]:
     path = Path(file_path)
     _validate_path(path, [".txt", ".md"])
@@ -126,11 +108,6 @@ def load_text_file(file_path: str) -> List[Document]:
             "filename": path.name,
         }
     )]
-
-
-# ─────────────────────────────────────────────
-# UNIFIED LOADER
-# ─────────────────────────────────────────────
 
 def load_document(source: str) -> List[Document]:
     source = source.strip()
