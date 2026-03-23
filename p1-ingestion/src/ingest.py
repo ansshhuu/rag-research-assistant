@@ -11,11 +11,6 @@ from src.vector_store import VectorStore
 
 load_dotenv()
 
-
-# ─────────────────────────────────────────────
-# PIPELINE
-# ─────────────────────────────────────────────
-
 def run_ingestion(
     sources: list[str],
     chunk_size: int = 500,
@@ -24,13 +19,7 @@ def run_ingestion(
     persist_directory: str = "chroma_db",
     collection_name: str = "documents",
 ) -> dict:
-    """
-    The full ingestion pipeline — end to end:
-
-        sources → load → chunk → embed → store
-
-    Returns a summary dict so callers (and tests) can inspect what happened.
-    """
+   
     start_time = time.time()
     summary = {
         "sources_requested": len(sources),
@@ -42,8 +31,6 @@ def run_ingestion(
         "failed_sources":    [],
         "duration_seconds":  0.0,
     }
-
-    # ── Step 1: Load ──────────────────────────────────────
     print("\n" + "=" * 55)
     print("STEP 1 — LOADING DOCUMENTS")
     print("=" * 55)
@@ -65,8 +52,6 @@ def run_ingestion(
     if not all_documents:
         print("\n[PIPELINE] No documents loaded. Exiting.")
         return summary
-
-    # ── Step 2: Chunk ─────────────────────────────────────
     print("\n" + "=" * 55)
     print("STEP 2 — CHUNKING")
     print("=" * 55)
@@ -81,8 +66,6 @@ def run_ingestion(
     if not chunks:
         print("\n[PIPELINE] No chunks produced. Exiting.")
         return summary
-
-    # ── Step 3: Embed ─────────────────────────────────────
     print("\n" + "=" * 55)
     print("STEP 3 — EMBEDDING")
     print("=" * 55)
@@ -90,8 +73,6 @@ def run_ingestion(
     embedder = Embedder(model_key=model_key)
     embedded_chunks = embedder.embed_chunks(chunks)
     summary["total_embedded"] = len(embedded_chunks)
-
-    # ── Step 4: Store ─────────────────────────────────────
     print("\n" + "=" * 55)
     print("STEP 4 — STORING IN VECTOR DB")
     print("=" * 55)
@@ -101,8 +82,6 @@ def run_ingestion(
         collection_name=collection_name,
     )
     store.add(embedded_chunks)
-
-    # ── Summary ───────────────────────────────────────────
     summary["duration_seconds"] = round(time.time() - start_time, 2)
 
     print("\n" + "=" * 55)
@@ -120,10 +99,6 @@ def run_ingestion(
     return summary
 
 
-# ─────────────────────────────────────────────
-# QUERY HELPER — lets you test retrieval from CLI
-# ─────────────────────────────────────────────
-
 def run_query(
     query_text: str,
     top_k: int = 5,
@@ -132,10 +107,6 @@ def run_query(
     collection_name: str = "documents",
     where: dict | None = None,
 ) -> list[dict]:
-    """
-    Embeds a query and retrieves the top_k most relevant chunks.
-    This is a preview of what P2's RAG engine will do properly.
-    """
     embedder = Embedder(model_key=model_key)
     store    = VectorStore(
         persist_directory=persist_directory,
@@ -154,11 +125,6 @@ def run_query(
         print()
 
     return results
-
-
-# ─────────────────────────────────────────────
-# CLI
-# ─────────────────────────────────────────────
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
@@ -182,7 +148,6 @@ Examples:
 
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    # ── ingest subcommand ─────────────────────
     ingest_parser = subparsers.add_parser("ingest", help="Run the ingestion pipeline")
     ingest_parser.add_argument(
         "--sources", nargs="+", required=True,
@@ -205,8 +170,6 @@ Examples:
         "--collection", type=str, default="documents",
         help="ChromaDB collection name (default: documents)"
     )
-
-    # ── query subcommand ──────────────────────
     query_parser = subparsers.add_parser("query", help="Query the vector store")
     query_parser.add_argument(
         "--text", type=str, required=True,
@@ -247,7 +210,7 @@ def main():
             collection_name=args.collection,
         )
         if summary["sources_failed"] > 0:
-            sys.exit(1)   # non-zero exit = CI pipeline knows something failed
+            sys.exit(1) 
 
     elif args.command == "query":
         where = {"type": args.filter_type} if args.filter_type else None
