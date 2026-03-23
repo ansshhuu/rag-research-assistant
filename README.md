@@ -5,13 +5,13 @@ An end-to-end Agentic RAG system built in modular sub-projects.
 ## Project Structure
 
 | Sub-project | Description | Status |
-|---|---|---|
-| p1-ingestion | Document ingestion pipeline | 🔧 In progress |
-| p2-query-engine | RAG query engine + FastAPI | ⏳ Planned |
-| p3-agent | Agentic reasoning layer | ⏳ Planned |
-| p4-docker | Dockerization | ⏳ Planned |
-| p5-cicd | CI/CD pipeline | ⏳ Planned |
-| p6-frontend | Frontend + observability | ⏳ Planned |
+|---|---|
+| p1-ingestion | Document ingestion pipeline |
+| p2-query-engine | RAG query engine + FastAPI |
+| p3-agent | Agentic reasoning layer | 
+| p4-docker | Dockerization |
+| p5-cicd | CI/CD pipeline | 
+| p6-frontend | Frontend + observability |
 
 ## Tech Stack
 - Python 3.11+
