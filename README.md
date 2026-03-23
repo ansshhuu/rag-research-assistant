@@ -4,7 +4,7 @@ An end-to-end Agentic RAG system built in modular sub-projects.
 
 ## Project Structure
 
-| Sub-project | Description | Status |
+| Sub-project | Description |
 |---|---|
 | p1-ingestion | Document ingestion pipeline |
 | p2-query-engine | RAG query engine + FastAPI |
